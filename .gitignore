@@ -44,4 +44,5 @@ yarn-error.*
 rork-eslint.config.js
 core
 node_modules
-.expo
+.expobun.lockb
+bun.lock
