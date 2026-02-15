@@ -2,8 +2,8 @@ import XLSX from 'xlsx-js-style';
 import { Platform, Alert } from 'react-native';
 import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { Transaction, MonthlySummary } from '../types/transaction';
-import { formatDisplayDate, getMonthKeyFromISO } from './dateUtils';
+import { Transaction, MonthlySummary } from '@/types/transaction';
+import { formatDisplayDate, getMonthKeyFromISO } from '@/utils/dateUtils';
 
 const MONTH_NAMES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',

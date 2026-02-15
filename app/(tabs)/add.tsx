@@ -14,13 +14,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Package, DollarSign, Hash, FileText, Check, Tags, ChevronDown, X, Trash2, RefreshCw, Calendar, Mic, MicOff, Wand2, Play, Square, Clock, Volume2 } from 'lucide-react-native';
-import { fetchBNAExchangeRate } from '../../utils/exchangeRate';
-import { parseDateParts, datePartsToISO } from '../../utils/dateUtils';
-import Colors from '../../constants/colors';
-import { useTransactions } from '../../context/TransactionContext';
-import { TransactionType } from '../../types/transaction';
-import { parseVoiceText, ParsedVoiceData } from '../../utils/voiceParser';
-import { PendingRecording, loadPendingRecordings, savePendingRecording, deletePendingRecording } from '../../utils/pendingRecordings';
+import { fetchBNAExchangeRate } from '@/utils/exchangeRate';
+import { parseDateParts, datePartsToISO } from '@/utils/dateUtils';
+import Colors from '@/constants/colors';
+import { useTransactions } from '@/context/TransactionContext';
+import { TransactionType } from '@/types/transaction';
+import { parseVoiceText, ParsedVoiceData } from '@/utils/voiceParser';
+import { PendingRecording, loadPendingRecordings, savePendingRecording, deletePendingRecording } from '@/utils/pendingRecordings';
 import { Audio } from 'expo-av';
 
 interface SuggestionDropdownProps {

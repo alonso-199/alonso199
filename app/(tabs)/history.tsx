@@ -14,12 +14,12 @@ import {
 } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Trash2, Package, ChevronDown, X, Tags, Hash, DollarSign, FileText, Check, Search, ArrowUpDown, ArrowUp, ArrowDown, Calendar } from 'lucide-react-native';
-import Colors from '../../constants/colors';
-import { useTransactions, useCurrentMonthTransactions } from '../../context/TransactionContext';
-import { formatMonthName, formatCurrency } from '../../utils/excelExport';
-import { calculateUSDTotalFromTransactions, formatUSD } from '../../utils/exchangeRate';
-import { formatDisplayDate, compareDateISO, parseDateParts, datePartsToISO } from '../../utils/dateUtils';
-import { Transaction, TransactionType } from '../../types/transaction';
+import Colors from '@/constants/colors';
+import { useTransactions, useCurrentMonthTransactions } from '@/context/TransactionContext';
+import { formatMonthName, formatCurrency } from '@/utils/excelExport';
+import { calculateUSDTotalFromTransactions, formatUSD } from '@/utils/exchangeRate';
+import { formatDisplayDate, compareDateISO, parseDateParts, datePartsToISO } from '@/utils/dateUtils';
+import { Transaction, TransactionType } from '@/types/transaction';
 
 type FilterType = 'all' | 'entrada' | 'salida';
 type SortType = 'date_desc' | 'date_asc' | 'value_desc' | 'value_asc';

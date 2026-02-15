@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import createContextHook from '@nkzw/create-context-hook';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Transaction, MonthlySummary } from '../types/transaction';
-import { fetchBNAExchangeRateForDate, clearExchangeRateCache } from '../utils/exchangeRate';
+import { Transaction, MonthlySummary } from '@/types/transaction';
+import { fetchBNAExchangeRateForDate, clearExchangeRateCache } from '@/utils/exchangeRate';
 
 const STORAGE_KEY = 'inventory_transactions';
 const SUGGESTIONS_KEY = 'inventory_suggestions';
