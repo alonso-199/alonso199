@@ -1,7 +1,6 @@
 {
   "name": "expo-app",
   "main": "expo-router/entry",
-  "packageManager": "npm@10",
   "version": "1.0.0",
   "scripts": {
     "start": "bunx rork start -p g3kkm3z25srqt1dexssdl --tunnel",
@@ -55,9 +54,6 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/ngrok": "^4.1.0",
-    "@react-native-community/cli": "latest",
-    "@react-native/metro-config": "latest",
-    "babel-plugin-module-resolver": "^5.0.0",
     "@types/react": "~19.1.10",
     "eslint": "^9.31.0",
     "eslint-config-expo": "~10.0.0",
