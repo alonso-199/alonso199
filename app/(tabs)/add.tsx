@@ -1024,9 +1024,14 @@ export default function AddTransactionScreen() {
 
   const handleInputFocus = (offset: number) => {
     setTimeout(() => {
-      scrollViewRef.current?.scrollTo({ y: offset, animated: true });
+      const target = Math.max(0, offset - 40);
+      scrollViewRef.current?.scrollTo({ y: target, animated: true });
     }, 300);
   };
+
+  // extra fields for 'animales' product type
+  const [kilosNet, setKilosNet] = useState('');
+  const [pricePerKg, setPricePerKg] = useState('');
 
   const filteredProductTypes = useMemo(() => {
     if (!productType) return suggestions.productTypes;
@@ -1070,7 +1075,16 @@ export default function AddTransactionScreen() {
     }
   };
 
-  const totalValue = (parseFloat(quantity) || 0) * getUnitPriceWithIVA();
+  const totalValue = useMemo(() => {
+    const qty = parseFloat(quantity) || 0;
+    const unit = getUnitPriceWithIVA();
+    if (productType && productType.toLowerCase().includes('animal')) {
+      const kilos = parseFloat(kilosNet.replace(',', '.')) || 0;
+      const ppk = parseFloat(pricePerKg.replace(',', '.')) || 0;
+      return qty * kilos * ppk;
+    }
+    return qty * unit;
+  }, [quantity, unitPrice, productType, kilosNet, pricePerKg, currencyMode, exchangeRate]);
   
   const displayConvertedPrice = useMemo(() => {
     if (currencyMode === 'USD' && exchangeRate && unitPrice) {
@@ -1411,6 +1425,38 @@ export default function AddTransactionScreen() {
               />
             </View>
           </View>
+
+          {productType && productType.toLowerCase().includes('animal') && (
+            <View style={{ marginTop: 8 }}>
+              <View style={styles.inputLabel}>
+                <Text style={styles.labelText}>Kilos neto</Text>
+              </View>
+              <TextInput
+                style={[styles.input, { marginTop: 6 }]}
+                placeholder="Kilos neto por animal"
+                placeholderTextColor={Colors.textLight}
+                value={kilosNet}
+                onChangeText={setKilosNet}
+                keyboardType="numeric"
+                onFocus={() => handleInputFocus(320)}
+                testID="input-kilos-neto"
+              />
+
+              <View style={[styles.inputLabel, { marginTop: 10 }]}>
+                <Text style={styles.labelText}>Precio por kg neto</Text>
+              </View>
+              <TextInput
+                style={[styles.input, { marginTop: 6 }]}
+                placeholder="0,00"
+                placeholderTextColor={Colors.textLight}
+                value={pricePerKg}
+                onChangeText={setPricePerKg}
+                keyboardType="numeric"
+                onFocus={() => handleInputFocus(380)}
+                testID="input-price-per-kg"
+              />
+            </View>
+          )}
 
           <View style={styles.currencySelector}>
             <Text style={styles.currencySelectorLabel}>Moneda del precio:</Text>

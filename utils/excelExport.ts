@@ -11,6 +11,7 @@ const MONTH_NAMES = [
 ];
 
 export function formatMonthName(monthStr: string): string {
+  if (monthStr === 'total') return 'Total';
   const [year, month] = monthStr.split('-');
   return `${MONTH_NAMES[parseInt(month) - 1]} ${year}`;
 }

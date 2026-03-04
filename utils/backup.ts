@@ -3,8 +3,7 @@ import { Platform, Alert } from 'react-native';
 import XLSX from 'xlsx-js-style';
 import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-// DocumentPicker is dynamically imported in importAllData to avoid requiring
-// the package at bundle time if not installed.
+import * as DocumentPicker from 'expo-document-picker';
 
 const TRANSACTIONS_KEY = 'inventory_transactions';
 const SUGGESTIONS_KEY = 'inventory_suggestions';
@@ -57,12 +56,6 @@ export async function exportAllData(): Promise<void> {
 
 export async function importAllData(): Promise<void> {
   try {
-    const DocumentPickerModule = await import('expo-document-picker').catch(() => null);
-    if (!DocumentPickerModule) {
-      Alert.alert('Función no disponible', 'Instala el paquete expo-document-picker para poder importar backups.');
-      return;
-    }
-    const DocumentPicker = DocumentPickerModule.default || DocumentPickerModule;
     const res = await DocumentPicker.getDocumentAsync({ type: 'application/json', copyToCacheDirectory: true });
     if (res.type !== 'success' || !res.uri) return;
     // read file

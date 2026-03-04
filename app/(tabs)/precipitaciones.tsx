@@ -80,7 +80,7 @@ export default function PrecipitacionesScreen() {
     return map;
   }, [entries]);
 
-  const rainyDaysCount = entriesForMonth.filter(e => e.mm > 0).length;
+  const rainyDaysTotalMm = entriesForMonth.reduce((sum, e) => sum + (e.mm || 0), 0);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -94,12 +94,12 @@ export default function PrecipitacionesScreen() {
             <Text style={{ color: Colors.primary, fontWeight: '600' }}>{'>'}</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ color: Colors.textSecondary }}>{rainyDaysCount} días con precipitación</Text>
+        <Text style={{ color: Colors.textSecondary }}>{rainyDaysTotalMm} mm este mes</Text>
       </View>
 
       <View style={[styles.section, { padding: 12 }]}> 
         <View style={styles.calendarGrid}>
-          {days.map(d => {
+            {days.map(d => {
             const dayStr = String(d).padStart(2,'0');
             const monthStr = String(currentMonth).padStart(2,'0');
             const iso = `${currentYear}-${monthStr}-${dayStr}`;
@@ -108,6 +108,7 @@ export default function PrecipitacionesScreen() {
               <TouchableOpacity key={d} style={[styles.dayCell, selectedDay === d ? styles.dayCellSelected : undefined]} onPress={() => { setSelectedDay(d); setMm(entry ? String(entry.mm) : ''); }}>
                 <Text style={styles.dayNumber}>{d}</Text>
                 {entry ? <Text style={styles.dayMm}>{entry.mm} mm</Text> : null}
+                {entry && entry.frost ? <Text style={{ marginTop: 4 }}>🧊</Text> : null}
               </TouchableOpacity>
             );
           })}
@@ -120,6 +121,23 @@ export default function PrecipitacionesScreen() {
               <TextInput value={mm} onChangeText={setMm} keyboardType="decimal-pad" style={[styles.input, { flex: 1 }]} placeholder="mm" />
               <TouchableOpacity style={[styles.addButton, { marginLeft: 8 }]} onPress={onSaveForSelectedDay}>
                 <Text style={styles.addButtonText}>Guardar</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+              <TouchableOpacity
+                style={{ padding: 8, borderRadius: 8, backgroundColor: Colors.surface }}
+                onPress={async () => {
+                  const dayStr = String(selectedDay).padStart(2, '0');
+                  const monthStr = String(currentMonth).padStart(2, '0');
+                  const iso = `${currentYear}-${monthStr}-${dayStr}`;
+                  const existing = entries.find(e => e.date === iso);
+                  const newEntry = existing ? { ...existing, frost: !existing.frost } : { id: Date.now().toString(), date: iso, mm: parseFloat(mm.replace(',', '.')) || 0, frost: true, createdAt: new Date().toISOString() };
+                  await upsertPrecipitation(newEntry);
+                  const all = await loadPrecipitations();
+                  setEntries(all);
+                }}
+              >
+                <Text style={{ color: Colors.text }}>Marcar/Desmarcar helada</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -150,7 +168,7 @@ export default function PrecipitacionesScreen() {
         <View style={styles.chartRow}>
           {annualTotals.map((val, idx) => (
             <View key={idx} style={styles.chartColumn}>
-              <View style={[styles.bar, { height: `${(val / maxMonthly) * 100}%`, backgroundColor: Colors.primary }]} />
+              <View style={[styles.bar, { height: `${(val / maxMonthly) * 80}%`, backgroundColor: Colors.primary }]} />
               <Text style={styles.chartLabel}>{String(idx+1).padStart(2,'0')}</Text>
             </View>
           ))}

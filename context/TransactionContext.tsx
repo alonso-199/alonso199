@@ -173,6 +173,7 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
   }, [transactions, saveTransactions]);
 
   const getMonthlyTransactions = useCallback((month: string) => {
+    if (month === 'total') return transactions.slice();
     return transactions.filter(t => t.date.startsWith(month));
   }, [transactions]);
 
@@ -200,6 +201,8 @@ export const [TransactionProvider, useTransactions] = createContextHook(() => {
 
   const availableMonths = useMemo(() => {
     const months = new Set<string>();
+    // allow a special 'total' option to view all transactions
+    months.add('total');
     const now = new Date();
     months.add(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
     

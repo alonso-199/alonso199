@@ -9,6 +9,7 @@ export interface PrecipitationEntry {
   id: string;
   date: string; // YYYY-MM-DD
   mm: number;
+  frost?: boolean;
   createdAt: string;
 }
 
